@@ -1,0 +1,6 @@
+*.css
+*.js
+*.jpg
+*.tpl
+php/Conf/*
+php/Tpl/
