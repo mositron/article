@@ -17,7 +17,7 @@ class View extends Service
 
     Load::cache();
     $db=Load::DB();
-    if(!$news=$db->findone('article',['no'=>$id,'dd'=>['$exists'=>false],'pl'=>['$gte'=>1]],self::$arg_view))
+    if(!$news=$db->findone('article',['no'=>$id,'sv'=>DOMAIN,'dd'=>['$exists'=>false],'pl'=>['$gte'=>1]],self::$arg_view))
     {
       return ['move'=>'/'];
     }
@@ -46,7 +46,7 @@ class View extends Service
     Load::$core->data['image_type']='image/jpeg';
     Load::$core->data['type']='article';
 
-    $arg=['_id'=>['$ne'=>$news['_id']],'c'=>array_keys($ncate)[0],'pl'=>1];
+    $arg=['_id'=>['$ne'=>$news['_id']],'c'=>array_keys($ncate)[0],'pl'=>1,'sv'=>DOMAIN];
     $relate=$this->find($arg,[],['limit'=>6]);
 
     return Load::$core

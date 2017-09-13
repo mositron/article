@@ -5,7 +5,7 @@ use Article\App\Container;
 
 class Service extends Container
 {
-  public static $arg_view=['_id'=>1,'no'=>1,'t'=>1,'fd'=>1,'da'=>1,'ds'=>1,'di'=>1,'do'=>1,'is'=>1,'mb'=>1,'dt'=>1,'tb'=>1,'c'=>1,'na'=>1,'d'=>1,'sv'=>1,'u'=>1,'un'=>1,'exl'=>1,'url'=>1,'tags'=>1,'sh'=>1];
+  public static $arg_view=['_id'=>1,'no'=>1,'t'=>1,'fd'=>1,'da'=>1,'ds'=>1,'di'=>1,'do'=>1,'is'=>1,'mb'=>1,'dt'=>1,'tb'=>1,'c'=>1,'na'=>1,'d'=>1,'dm'=>1,'sv'=>1,'u'=>1,'un'=>1,'exl'=>1,'url'=>1,'tags'=>1,'sh'=>1];
   public function __construct(array $arg=[])
   {
 
@@ -15,7 +15,7 @@ class Service extends Container
   {
     if($n=Load::DB()->find('article',
       array_merge(['dd'=>['$exists'=>false]],$cond),
-      array_merge(['_id'=>1,'no'=>1,'t'=>1,'fd'=>1,'da'=>1,'ds'=>1,'di'=>1,'de'=>1,'u'=>1,'un'=>1,'ue'=>1,'do'=>1,'c'=>1,'exl'=>1,'url'=>1,'sv'=>1,'pl'=>1,'is'=>1,'na'=>1],$arg),
+      array_merge(['_id'=>1,'no'=>1,'t'=>1,'fd'=>1,'da'=>1,'ds'=>1,'di'=>1,'de'=>1,'u'=>1,'un'=>1,'ue'=>1,'do'=>1,'c'=>1,'exl'=>1,'url'=>1,'dm'=>1,'sv'=>1,'pl'=>1,'is'=>1,'na'=>1],$arg),
       array_merge(['sort'=>['ds'=>-1],'skip'=>0,'limit'=>100],$sort)))
     {
       for($i=0;$i<count($n);$i++)
@@ -205,15 +205,19 @@ class Service extends Container
   public function fetch(array $n): ?array
   {
     $img='https://'.$n['sv'].'/files/'.$n['fd'].'/';
+    $fig=($n['sv']==DOMAIN?'':'https://'.$n['sv']).'/files/'.$n['fd'].'/';
     $cate=[];
-    foreach ((array)$n['c'] as $c)
+    if($n['sv']==DOMAIN)
     {
-      $cate[]=Load::$core->data['cate'][$c]['t'];
+      foreach ((array)$n['c'] as $c)
+      {
+        $cate[]=Load::$core->data['cate'][$c]['t'];
+      }
     }
     return array_merge($n,[
                 'title'=>$n['t'],
-                'link'=>$n['pr']??$this->link($n),
-                'url'=>$n['pr']??'/view/'.$n['no'],
+                'link'=>$n['pr']?:$this->link($n),
+                'url'=>$n['pr']?:(($n['sv']==DOMAIN?'':'https://'.$n['sv']).'/view/'.$n['no']),
                 'sec'=>Load::Time()->sec($n['ds']),
                 'ago'=>Load::Time()->from($n['ds'],'ago'),
                 'cate'=>implode(', ',$cate),
@@ -223,7 +227,10 @@ class Service extends Container
                 'img'=>'/files/'.$n['fd'].'/small.jpg',
                 'img_s'=>$img.'small.jpg',
                 'img_t'=>$img.'thumbnail.jpg',
-                'img_m'=>$img.'original.jpg'
+                'img_m'=>$img.'original.jpg',
+                'fig_s'=>$fig.'small.jpg',
+                'fig_t'=>$fig.'thumbnail.jpg',
+                'fig_m'=>$fig.'original.jpg'
     ]);
   }
 

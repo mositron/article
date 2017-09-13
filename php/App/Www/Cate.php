@@ -30,7 +30,7 @@ class Cate extends Service
     Load::$core->data['keywords']=$t.', '.Load::$core->data['keywords'];
 
     $db=Load::DB();
-    $_ = ['dd'=>['$exists'=>false],'pl'=>1,'c'=>$cid];
+    $_ = ['dd'=>['$exists'=>false],'pl'=>1,'c'=>$cid,'sv'=>DOMAIN];
     if($count=$db->count('article',$_))
     {
       list($pg,$skip)=Load::Pager()->navigation(80,$count,['/cate/'.$cid,'/page-'],$page);

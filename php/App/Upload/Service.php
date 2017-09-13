@@ -25,13 +25,14 @@ class Service extends Container
       switch($_POST['method'])
       {
         case 'post':
+        case 'remove':
         case 'list':
         case 'delete':
         case 'upload':
           $_POST['data']=json_decode($_POST['data'],true);
           if($_POST['data']['sv']&&$_POST['data']['fd'])
           {
-            define('DOMAIN',$_POST['data']['sv']);
+            define('DOMAIN',$_POST['domain']);
             define('UPLOAD_FOLDER',$_POST['data']['sv'].'/'.$_POST['data']['fd']);
             define('UPLOAD_PATH',_FILES.UPLOAD_FOLDER);
             require_once(__DIR__.'/Method/'.$_POST['method'].'.php');

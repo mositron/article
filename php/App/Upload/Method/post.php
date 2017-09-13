@@ -28,6 +28,10 @@ if($_POST['data']['_id'])
   }
   else
   {
+    if($_POST['data']['da'])
+    {
+      $_POST['data']['da']=Load::Time()->from($_POST['data']['da']);
+    }
     if($_POST['data']['di'])
     {
       $_POST['data']['di']=Load::Time()->from($_POST['data']['di']);
@@ -44,8 +48,11 @@ if($_POST['data']['_id'])
   }
   Load::$core
     ->delete('home')
-    ->delete('cate/'.intval($_POST['data']['c']))
     ->delete('view/'.intval($_POST['data']['no']));
+  foreach((array)$_POST['data']['c'] as $c)
+  {
+    Load::$core->delete('cate/'.intval($c));
+  }
   $status=['status'=>'OK'];
 }
 ?>

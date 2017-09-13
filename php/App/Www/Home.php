@@ -13,7 +13,7 @@ class Home extends Service
     {
       if(!$v['hide'])
       {
-        $news[$k]=$this->find(['pl'=>1,'c'=>$k],[],['limit'=>12]);
+        $news[$k]=$this->find(['pl'=>1,'c'=>$k,'sv'=>DOMAIN],[],['limit'=>12]);
       }
     }
     return Load::$core

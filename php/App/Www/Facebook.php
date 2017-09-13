@@ -7,7 +7,7 @@ class Facebook extends Service
   public function _facebook()
   {
     $db=Load::DB();
-    $arg=['dd'=>['$exists'=>false],'pl'=>['$in'=>[1,2]]];
+    $arg=['dd'=>['$exists'=>false],'sv'=>DOMAIN,'pl'=>['$in'=>[1,2]]];
     $data=[];
     $skip=0;
     $limit=100;
@@ -18,6 +18,7 @@ class Facebook extends Service
     {
       foreach($tmp as $v)
       {
+        if($v['exl'])continue;
         $link=$v['link'];
         $ct = $v['d'].'';
         $ct = str_replace('"//www.','"https://www.',$ct);
